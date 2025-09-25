@@ -1,0 +1,13 @@
+docker build -t mediapipe-app .
+
+
+docker run -it --rm \
+    --device /dev/video0:/dev/video0 \
+    -e DISPLAY=$DISPLAY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    mediapipe-app
+
+
+O EJECUTAR
+
+./rebuild.sh
