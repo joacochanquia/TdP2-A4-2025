@@ -6,7 +6,7 @@
 #include "webpage.h"
 
 // Variable estática para guardar el modo actual de operación
-static OperatingMode currentMode;
+static ModosOperacion modoActual;
 
 // --- Variables y funciones solo para MODO AP ---
 ESP8266WebServer server(80);
@@ -28,16 +28,16 @@ unsigned long lastQueryTime = 0;
 
 // --- Implementación de las funciones principales ---
 
-OperatingMode wifi_init() {
+ModosOperacion wifi_init() {
   // Configurar el pin de selección de modo con resistencia PULLUP interna.
   // Esto significa que si el pin no está conectado a nada, su estado será ALTO (HIGH).
   // Si lo conectas a GND, su estado será BAJO (LOW).
   pinMode(MODE_PIN, INPUT_PULLUP);
   delay(10); // Pequeña pausa para estabilizar la lectura del pin
 
-  if (digitalRead(MODE_PIN) == LOW) {
+  if (digitalRead(MODE_PIN) == CLIENT_MODE_VALUE) {
     // ---- INICIAR EN MODO CLIENTE (STA) ----
-    currentMode = MODE_CLIENT;
+    modoActual = MODE_CLIENT;
     Serial.println("Pin de modo conectado a GND. Iniciando en MODO CLIENTE...");
     WiFi.begin(CLIENT_WIFI_SSID, CLIENT_WIFI_PASSWORD);
     
@@ -56,7 +56,7 @@ OperatingMode wifi_init() {
 
   } else {
     // ---- INICIAR EN MODO ACCESS POINT (AP) ----
-    currentMode = MODE_AP;
+    modoActual = MODE_AP;
     Serial.println("Pin de modo no conectado. Iniciando en MODO ACCESS POINT...");
     
     IPAddress local_IP(AP_SERVER_IP);
@@ -77,17 +77,17 @@ OperatingMode wifi_init() {
     Serial.println("Servidor HTTP iniciado.");
   }
 
-  return currentMode;
+  return modoActual;
 }
 
 String wifi_get_command() {
-  if (currentMode == MODE_AP) {
+  if (modoActual == MODE_AP) {
     // En modo AP, escuchamos peticiones HTTP en nuestro servidor
     receivedCommandAP = "";
     server.handleClient();
     return receivedCommandAP;
 
-  } else { // currentMode == MODE_CLIENT
+  } else { // modoActual == MODE_CLIENT
     // En modo Cliente, hacemos una petición a un servidor externo cada cierto intervalo
     if (millis() - lastQueryTime > COMMAND_QUERY_INTERVAL_MS) {
       lastQueryTime = millis(); // Actualizar el tiempo de la última consulta

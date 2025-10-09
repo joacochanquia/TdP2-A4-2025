@@ -2,13 +2,13 @@
 #define MOTOR_CONTROL_H
 
 // Inicializa los pines y los objetos Servo
-void motors_init();
+void auto_init();
 
 // Funciones para controlar las acciones del auto
-void car_advance();
-void car_stop();
-void car_reverse();
-void car_turn_clockwise();
-void car_turn_counter_clockwise();
+void auto_avanzar();
+void auto_detener();
+void auto_reversa();
+void auto_giro_horario();
+void auto_giro_antihorario();
 
 #endif // MOTOR_CONTROL_H
