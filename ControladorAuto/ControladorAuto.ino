@@ -2,18 +2,16 @@
 #include "MotorControl.h"
 #include "WiFiHandler.h"
 
-// Variable global para almacenar el modo de operación actual
-ModosOperacion modoActual;
-
 /************************************************************/
 void setup() {
   Serial.begin(115200);
   Serial.println("\nIniciando controlador del auto...");
 
+  // Inicializa los motores
   auto_init();
   
-  // Inicializa el WiFi y detecta el modo de operación
-  modoActual = wifi_init();
+  // Inicializa el WiFi
+  wifi_init();
 
   Serial.println("Sistema listo.");
 }
@@ -21,8 +19,7 @@ void setup() {
 /************************************************************/
 void loop() {
   
-  // Obtiene el siguiente comando. La función se encarga de la lógica
-  // de si debe escuchar como servidor o preguntar como cliente.
+  // Obtiene el siguiente comando desde el servidor web
   String command = wifi_get_command();
 
   // Si se recibió un comando, procesarlo
@@ -30,7 +27,6 @@ void loop() {
     Serial.print("Comando recibido: ");
     Serial.println(command);
 
-    // El procesamiento de comandos es idéntico para ambos modos
     if (command == CMD_AVANZAR) {
       auto_avanzar();
     } else if (command == CMD_REVERSA) {
@@ -43,7 +39,5 @@ void loop() {
       auto_detener();
     }
   }
-
-  
 }
 /************************************************************/
