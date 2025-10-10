@@ -7,7 +7,7 @@ Servo servoLeft;
 Servo servoRight;
 
 void auto_init() {
-  // Conectar los servos a los pines definidos en config.h
+  // Conectar los servos
   servoLeft.attach(SERVO_LEFT_PIN);
   servoRight.attach(SERVO_RIGHT_PIN);
 
@@ -16,14 +16,12 @@ void auto_init() {
 }
 
 void auto_detener() {
-  // Un valor de 90 microsegundos generalmente detiene un servo 360
   servoLeft.write(90);
   servoRight.write(90);
 }
 
 void auto_avanzar() {
   // Para avanzar, ambos servos giran en direcciones opuestas
-  // Nota: Puede que necesites invertir 0 y 180 dependiendo de cómo montaste los servos
   servoLeft.write(0);
   servoRight.write(180);
 }
@@ -35,13 +33,13 @@ void auto_reversa() {
 }
 
 void auto_giro_horario() {
-  // Para girar en sentido horario, ambos motores giran "hacia adelante"
+  // Para girar en sentido horario, ambos motores giran al mismo lado
   servoLeft.write(0);
   servoRight.write(0);
 }
 
 void auto_giro_antihorario() {
-  // Para girar en sentido antihorario, ambos motores giran "hacia atrás"
+  // Para girar en sentido antihorario, se invierte la dirección del giro
   servoLeft.write(180);
   servoRight.write(180);
 }
