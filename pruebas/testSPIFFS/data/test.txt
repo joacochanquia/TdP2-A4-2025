@@ -1,0 +1,1 @@
+¡Hola SPIFFS desde la ESP32-CAM!
